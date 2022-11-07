@@ -11,6 +11,7 @@ const store = new Vuex.Store({
   state: {
     filter: null, // Username to filter shown freets by (null = show all)
     freets: [], // All freets created in the app
+    bookmarks: [], //all freets a user has bookmarked
     username: null, // Username of the logged in user
     alerts: {} // global success/error messages encountered during submissions to non-visible forms
   },
@@ -49,9 +50,22 @@ const store = new Vuex.Store({
       /**
        * Request the server for the currently available freets.
        */
-      const url = state.filter ? `/api/users/${state.filter}/freets` : '/api/freets';
+      const url = state.filter ? `/api/users/${state.filter}` : '/api/freets';
       const res = await fetch(url).then(async r => r.json());
       state.freets = res;
+    },
+    async refreshBookmarks(state) {
+      /**
+       * Request the server for the currently available bookmarked freets.
+       */
+      const url = `/api/bookmarks?${state.username}`
+      const res = await fetch(url).then(async r => r.json());
+      state.bookmarks = res;
+    }
+  },
+  getters: {
+    getUserFreets: state => {
+      return state.freets.filter(freet => freet.author === state.username);
     }
   },
   // Store data across page refreshes, only discard on browser close

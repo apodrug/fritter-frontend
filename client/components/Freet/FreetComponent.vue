@@ -52,6 +52,9 @@
       Posted at {{ freet.dateModified }}
       <i v-if="freet.edited">(edited)</i>
     </p>
+    <Bookmark
+      :freet = "freet">
+    </Bookmark>
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"
@@ -65,8 +68,11 @@
 </template>
 
 <script>
+import Bookmark from '@/components/Bookmark/Bookmark.vue';
+
 export default {
   name: 'FreetComponent',
+  components: {Bookmark},
   props: {
     // Data from the stored freet
     freet: {
