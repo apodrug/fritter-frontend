@@ -1,13 +1,7 @@
 <template>
     <div>
-    <button
-        v-if="$store.state.bookmarks.map(bookmark => bookmark.freetId).indexOf(freet._id) < 0"
-        @click = "bookmarkFreet">
+    <button @click = "bookmarkFreet">
         bookmark
-    </button>
-    <button v-else
-        @click="unBookmarkFreet">
-        remove bookmark
     </button>
     </div>
 </template>
