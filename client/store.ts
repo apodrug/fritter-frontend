@@ -58,7 +58,7 @@ const store = new Vuex.Store({
       /**
        * Request the server for the currently available bookmarked freets.
        */
-      const url = `/api/bookmarks?${state.username}`
+      const url = `/api/bookmarks?author=${state.username}`
       const res = await fetch(url).then(async r => r.json());
       state.bookmarks = res;
     }
@@ -66,6 +66,12 @@ const store = new Vuex.Store({
   getters: {
     getUserFreets: state => {
       return state.freets.filter(freet => freet.author === state.username);
+    },
+    getUserBookmarks: state => {
+      return state.bookmarks.filter(bookmark => bookmark.author === state.username);
+    },
+    getAllBookmarks: state => {
+      return state.bookmarks
     }
   },
   // Store data across page refreshes, only discard on browser close

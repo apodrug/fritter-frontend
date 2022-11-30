@@ -1,7 +1,14 @@
 <template>
     <div>
-    <button @click = "bookmarkFreet">
+    <button class="button"
+            v-if="$store.state.bookmarks.map(bookmark => bookmark._id).indexOf(freet._id) < 0"
+            @click="bookmarkFreet">
         bookmark
+    </button>
+    <button class="button"
+            v-else
+            @click="deleteBookmark">
+        unbookmark
     </button>
     </div>
 </template>
@@ -34,6 +41,18 @@ export default {
             }
         };
         this.request(params);
+    },
+    deleteBookmark() {
+        const params = {
+                method: 'DELETE',
+                message: 'Successfully unbookmarked freet',
+                body: JSON.stringify({freetId: this.freet._id}),
+                callback: () => {
+                    this.$set(this.alerts, params.message, 'success');
+                    setTimeout(() => this.$delete(this.alerts, params.message), 3000);
+                }
+            };
+            this.request(params);
     },
     async request(params) {
         /**

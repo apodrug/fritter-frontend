@@ -59,5 +59,39 @@ export default {
 <style>
 .flex {
   display: flex;
+  margin: 10px;
 }
+.flex input[type="radio"] {
+  opacity: 0;
+  position: fixed;
+  width: 0;
+}
+
+.flex label {
+    display: inline-block;
+    background-color: #ddd;
+    padding: 10px 20px;
+    font-family: sans-serif, Arial;
+    font-size: 16px;
+    border: 2px solid #444;
+    border-radius: 4px;
+}
+
+.flex label:hover {
+  background-color: #dfd;
+}
+
+.flex input[type="radio"]:focus + label {
+    border: 2px dashed #444;
+}
+
+.flex input[type=radio v-model=activeTab] {
+    background-color: #bfb;
+    border-color: #4c4;
+}
+
+.flex label:activeTab {
+  background-color: #dfd;
+}
+
 </style>

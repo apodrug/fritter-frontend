@@ -1,10 +1,12 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import BookmarkCollection from './collection';
+import * as FreetCollection from '../freet/collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as bookmarkValidator from '../bookmark/middleware';
 import * as util from './util';
+import * as freetUtil from '../freet/util';
 
 const router = express.Router();
 
@@ -34,7 +36,6 @@ router.get(
       next();
       return;
     }
-
     const allReacts = await BookmarkCollection.findAll();
     const response = allReacts.map(util.constructBookmarkResponse);
     res.status(200).json(response);
@@ -43,8 +44,8 @@ router.get(
     userValidator.isAuthorExists
   ],
   async (req: Request, res: Response) => {
-    const authorBookmarks = await BookmarkCollection.findAllByUsername(req.query.author as string);
-    const response = authorBookmarks.map(util.constructBookmarkResponse);
+    const authorBookmarks = await BookmarkCollection.findAllBookmarkedFreetsByUsername(req.query.author as string);
+    const response = authorBookmarks.map(freetUtil.constructFreetResponse);
     res.status(200).json(response);
   }
 );
@@ -63,12 +64,11 @@ router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
-    bookmarkValidator.isFreetExists
+    bookmarkValidator.isFreetExistsBody
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const reaction = await BookmarkCollection.addOne(userId, req.body.freetId);
-    console.log(req.body);
     
     res.status(201).json({
       message: 'Your bookmark was created successfully.',
@@ -80,21 +80,22 @@ router.post(
 /**
  * Delete a bookmark
  *
- * @name DELETE /api/bookmarks/:id
+ * @name DELETE /api/bookmarks/
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
  * @throws {404} - If the bookmarkId is not valid
  */
 router.delete(
-  '/:id?',
+  '/',
   [
     userValidator.isUserLoggedIn,
-    bookmarkValidator.isBookmarkExists,
-    bookmarkValidator.isValidBookmarkModifier
+    bookmarkValidator.isFreetExistsBody
+    // bookmarkValidator.isValidBookmarkModifier
   ],
   async (req: Request, res: Response) => {
-    await BookmarkCollection.deleteOne(req.params.id);
+    const userId = (req.session.userId as string) ?? '';
+    await BookmarkCollection.deleteOne(userId, req.body.freetId);
     res.status(200).json({
       message: 'Your bookmark was deleted successfully.'
     });
