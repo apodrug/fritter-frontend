@@ -4,7 +4,7 @@ import type {Freet} from '../freet/model';
 import ReactionModel from './model';
 import UserCollection from '../user/collection';
 import FreetCollection from '../freet/collection';
-import FreetModel from 'freet/model';
+import FreetModel from '../freet/model';
 
 /**
  * This files contains a class that has the functionality to explore reactions
@@ -24,6 +24,10 @@ class ReactCollection {
    * @return {Promise<HydratedDocument<Like>>} - The newly created reaction
    */
   static async addOne(reactionType: string, userId: Types.ObjectId | string, freet: Types.ObjectId | string): Promise<HydratedDocument<Reaction>> {
+    try {
+      await ReactCollection.deleteOne(userId, freet)
+    }
+    catch{}
     let recommended = 1;
     if (reactionType === 'sad') {
       recommended = 0;
@@ -71,23 +75,44 @@ class ReactCollection {
   }
 
   /**
+   * Get all the reactions by given user
+   *
+   * @param {string} username - The username of author of the reactions
+   * @return {Promise<HydratedDocument<Reaction>[]>} - An array of all of the reactions
+   */
+   static async findAllLikedFreetsByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
+    const author = await UserCollection.findOneByUsername(username);
+    const reactions = await ReactionModel.find({userId: author._id, reactionType: 'like'}).populate('userId');
+    const freets: Array<HydratedDocument<Freet>> = [];
+    let freet;
+    for (var react of reactions) {
+      freet = await FreetCollection.findOne(react.freetId);
+      freets.push(freet);
+    }
+    return freets;
+  }
+
+  /**
    * Get all the reactions of a freet
    *
    * @param {string} freet - The id of a freet
    * @return {Promise<HydratedDocument<Reaction>[]>} - An array of all of the reactions
    */
-  static async findAllByFreet(freet: Types.ObjectId | string): Promise<Array<HydratedDocument<Reaction>>> {
-    return ReactionModel.find({freetId: freet}).populate('userId');
+  static async findAllByFreet(freet: Types.ObjectId | string) {
+    const likes = await ReactionModel.find({freetId: freet, reactionType: 'like'}).populate('userId');
+    const happy = await ReactionModel.find({freetId: freet, reactionType: 'happy'}).populate('userId');
+    const sad = await ReactionModel.find({freetId: freet, reactionType: 'sad'}).populate('userId');
+    return [likes,happy,sad]
   }
 
   /**
-   * Remove a reaction with given reactionId.
+   * Remove a reaction with given freet and user.
    *
    * @param {string} freetId - The reactionId of reaction to delete
    * @return {Promise<Boolean>} - true if the reaction has been deleted, false otherwise
    */
-  static async deleteOne(reactId: Types.ObjectId | string): Promise<boolean> {
-    const reaction = await ReactionModel.deleteOne({_id: reactId});
+  static async deleteOne(userId: Types.ObjectId | string, freetId: Types.ObjectId | string): Promise<boolean> {
+    const reaction = await ReactionModel.deleteOne({userId, freetId});
     return reaction !== null;
   }
 

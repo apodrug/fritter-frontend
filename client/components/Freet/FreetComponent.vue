@@ -52,6 +52,9 @@
       Posted at {{ freet.dateModified }}
       <i v-if="freet.edited">(edited)</i>
     </p>
+    <Reaction
+      :freet = "freet">
+    </Reaction>
     <Bookmark
       :freet = "freet">
     </Bookmark>
@@ -69,10 +72,11 @@
 
 <script>
 import Bookmark from '@/components/Bookmark/Bookmark.vue';
+import Reaction from '@/components/Reaction/Reaction.vue';
 
 export default {
   name: 'FreetComponent',
-  components: {Bookmark},
+  components: {Bookmark, Reaction},
   props: {
     // Data from the stored freet
     freet: {

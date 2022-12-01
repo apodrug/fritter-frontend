@@ -35,7 +35,6 @@ router.get(
       next();
       return;
     }
-
     if (req.query.freetId !== undefined) {
       next('route');
       return;
@@ -71,8 +70,11 @@ router.get(
   ],
   async (req: Request, res: Response) => {
     const freetReacts = await ReactCollection.findAllByFreet(req.query.freetId as string);
-    const response = freetReacts.map(util.constructReactResponse);
-    res.status(200).json(response);
+    let responseList = []
+    for (var freetReact of freetReacts){
+    responseList.push(freetReact.map(util.constructReactResponse));
+    }
+    res.status(200).json(responseList);
   }
 );
 
@@ -121,21 +123,20 @@ router.post(
 /**
  * Delete a reaction
  *
- * @name DELETE /api/reacts/:id
+ * @name DELETE /api/reacts/
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in
  * @throws {404} - If the reactId is not valid
  */
 router.delete(
-  '/:id?',
+  '/',
   [
     userValidator.isUserLoggedIn,
-    reactValidator.isReactExists,
-    reactValidator.isValidReactModifier
   ],
   async (req: Request, res: Response) => {
-    await ReactCollection.deleteOne(req.params.id);
+    const userId = (req.session.userId as string) ?? '';
+    await ReactCollection.deleteOne(userId, req.body.freetId);
     res.status(200).json({
       message: 'Your reaction was deleted successfully.'
     });
