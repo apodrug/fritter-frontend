@@ -29,20 +29,19 @@ router.get(
   '/',
   async (req: Request, res: Response, next: NextFunction) => {
     // Check if authorId query parameter was supplied
-    if (req.query.author !== undefined) {
+    if (req.query.authorId !== undefined) {
+      console.log(req.query.authorId)
       next();
       return;
     }
-
     const allStatuses = await StatusCollection.findAll();
     const response = allStatuses.map(util.constructStatusResponse);
     res.status(200).json(response);
   },
   [
-    userValidator.isAuthorExists
   ],
   async (req: Request, res: Response) => {
-    const authorStatus = await StatusCollection.findAllByUsername(req.query.author as string);
+    const authorStatus = await StatusCollection.findAllByUsername(req.query.authorId as string);
     const response = authorStatus.map(util.constructStatusResponse);
     res.status(200).json(response);
   }

@@ -17,7 +17,9 @@ const store = new Vuex.Store({
     sad: [], //all freets a user sad reacted
     username: null, // Username of the logged in user
     alerts: {}, // global success/error messages encountered during submissions to non-visible forms
-    sortTimeline: false
+    sortTimeline: false,
+    statusOpen: '',
+    statuses: []
   },
   mutations: {
     alert(state, payload) {
@@ -104,9 +106,24 @@ const store = new Vuex.Store({
         state.sortTimeline = true
       }
       this.commit('refreshFreets');
+    },
+    async refreshStatuses(state) {
+      /**
+       * Request the server for the currently available freets.
+       */
+      const url = `/api/statuses`
+      const res = await fetch(url).then(async r => r.json());
+      state.statuses = res;
+    },
+    async openStatus(state, author) {
+      const url = `/api/statuses?authorId=${author}`
+      const res = await fetch(url).then(async r => r.json());
+      console.log(res)
+      state.statusOpen = author + ': ' + res[0].content
+    },
+    async clearOpenStatus(state) {
+      state.statusOpen = ''
     }
-
-
   },
   getters: {
     getUserFreets: state => {

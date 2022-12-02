@@ -5,12 +5,7 @@
   <main>
     <section>
       <header>
-        <h2>Profile</h2>
-      </header>
-    </section>
-    <section>
-      <header>
-        <h2> @{{ $store.state.username }}</h2>
+        <h2 id='profile' > @{{ $store.state.username }}'s Profile! 🌷</h2>
       </header>
     </section>
     <section>
@@ -39,9 +34,16 @@ export default {
   },
   data() {
     return {
-      tabList: ["Freets", "Saved"],
+      tabList: ["Your Freets", "Bookmarked Freets"],
     };
   },
 };
 
 </script>
+<style>
+
+#profile {
+  padding: 50px;
+  text-align: center;
+}
+</style>

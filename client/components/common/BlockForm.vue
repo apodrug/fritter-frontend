@@ -103,6 +103,10 @@ export default {
           this.$store.commit('refreshFreets');
         }
 
+        if (this.refreshStatuses) {
+          this.$store.commit('refreshStatuses');
+        }
+
         if (this.callback) {
           this.callback();
         }

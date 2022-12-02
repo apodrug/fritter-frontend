@@ -4,8 +4,10 @@
   <main>
     <section v-if="$store.state.username">
       <header>
-        <h2>Welcome @{{ $store.state.username }}</h2>
+        <h2>Welcome @{{ $store.state.username }} !</h2>
       </header>
+      <StatusPage />
+      <CreateStatusForm />
       <CreateFreetForm />
     </section>
     <section v-else>
@@ -64,10 +66,12 @@ import FreetComponent from '@/components/Freet/FreetComponent.vue';
 import CreateFreetForm from '@/components/Freet/CreateFreetForm.vue';
 import GetFreetsForm from '@/components/Freet/GetFreetsForm.vue';
 import FreetOrder from '@/components/Freet/FreetOrder.vue';
+import CreateStatusForm from '@/components/Status/CreateStatusForm.vue';
+import StatusPage from '@/components/Status/StatusPage.vue';
 
 export default {
   name: 'FreetPage',
-  components: {FreetComponent, GetFreetsForm, CreateFreetForm, FreetOrder},
+  components: {FreetComponent, GetFreetsForm, CreateFreetForm, FreetOrder, CreateStatusForm, StatusPage},
   mounted() {
     this.$refs.getFreetsForm.submit();
     this.$store.commit('refreshReactions');
