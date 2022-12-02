@@ -1,34 +1,34 @@
 <template>
     <div>
-    <button class="button"
+    <button class="button" id='reac'
             v-if="$store.state.likes.map(like => like.freet).indexOf(freet._id) < 0"
             @click="likeFreet">
-        like
+        ❤️
     </button>
-    <button class="button"
+    <button class="button" id='unreac'
             v-else
             @click="deleteReaction">
-        unlike
+        ❤️
     </button>
-    <button class="button"
+    <button class="button" id='reac'
             v-if="$store.state.happy.map(h => h.freet).indexOf(freet._id) < 0"
             @click="happyFreet">
-        happy
+        😆
     </button>
-    <button class="button"
+    <button class="button" id='unreac'
             v-else
             @click="deleteReaction">
-        unhappy
+        😆
     </button>
-    <button class="button"
+    <button class="button" id='reac'
             v-if="$store.state.sad.map(s => s.freet).indexOf(freet._id) < 0"
             @click="sadFreet">
-        sad
+        ☹️
     </button>
-    <button class="button"
+    <button class="button" id='unreac'
             v-else
             @click="deleteReaction">
-        unsad
+        ☹️
     </button>
     </div>
 </template>
@@ -126,3 +126,17 @@ export default {
   }
 };
 </script>
+
+<style>
+#reac {
+    margin-top: 2px;
+    margin-left:5px;
+    padding:5px;
+    border-radius:30%;
+    background-color: white;
+    font-size: 15px;
+}
+#unreac {
+    background-color: #808080;
+}
+</style>

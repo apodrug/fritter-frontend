@@ -78,20 +78,16 @@ export default {
 }
 
 .flex label:hover {
-  background-color: #dfd;
+  background-color: #D6BC00;
+}
+
+.flex :active {
+  background-color: #D6BC00;
 }
 
 .flex input[type="radio"]:focus + label {
     border: 2px dashed #444;
 }
 
-.flex input[type=radio v-model=activeTab] {
-    background-color: #bfb;
-    border-color: #4c4;
-}
-
-.flex label:activeTab {
-  background-color: #dfd;
-}
 
 </style>

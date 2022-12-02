@@ -59,7 +59,8 @@ h2 {
     text-align: left;
 }
 #all {
-    border: 1px solid #111;
+    border: 3px solid #111;
+    border-radius:2%;
 }
 
 h4 {

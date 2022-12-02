@@ -52,12 +52,14 @@
       Posted at {{ freet.dateModified }}
       <i v-if="freet.edited">(edited)</i>
     </p>
+    <section>
     <Reaction
       :freet = "freet">
     </Reaction>
     <Bookmark
       :freet = "freet">
     </Bookmark>
+    </section>
     <section class="alerts">
       <article
         v-for="(status, alert, index) in alerts"
@@ -181,5 +183,14 @@ export default {
     border: 1px solid #111;
     padding: 20px;
     position: relative;
+    border-radius:2%;
+    margin-bottom: 20px;
+    background-color: #FFFFF2;
+}
+.info {
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  font-size: 16px;
 }
 </style>

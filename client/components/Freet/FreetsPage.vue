@@ -3,12 +3,14 @@
 <template>
   <main>
     <section v-if="$store.state.username">
-      <header>
-        <h2>Welcome @{{ $store.state.username }} !</h2>
+      <header id='welcome' >
+        <h2>Welcome @{{ $store.state.username }} ! 🐣</h2>
       </header>
       <StatusPage />
+      <section id='forms'>
       <CreateStatusForm />
       <CreateFreetForm />
+      </section>
     </section>
     <section v-else>
       <header>
@@ -86,10 +88,13 @@ section {
 }
 
 header, header > * {
+    font-family: "Lucida Console", "Courier New", monospace;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
+
 
 button {
     margin-right: 10px;
@@ -99,5 +104,21 @@ section .scrollbox {
   flex: 1 0 50vh;
   padding: 3%;
   overflow-y: scroll;
+}
+
+#welcome {
+  font-size: 25px;
+}
+#chick {
+  text-align: center;
+  font-size: 50px;
+}
+
+main {
+  background-color: #ffffe0;
+}
+
+#forms {
+  background-color:#F1E591  ;
 }
 </style>

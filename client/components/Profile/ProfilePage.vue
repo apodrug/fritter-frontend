@@ -45,5 +45,10 @@ export default {
 #profile {
   padding: 50px;
   text-align: center;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+main {
+  background-color: #ffffe0;
 }
 </style>

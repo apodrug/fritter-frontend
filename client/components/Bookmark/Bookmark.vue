@@ -5,7 +5,7 @@
             @click="bookmarkFreet">
         bookmark
     </button>
-    <button class="button"
+    <button class="button" id='bookmarked'
             v-else
             @click="deleteBookmark">
         unbookmark
@@ -82,3 +82,12 @@ export default {
   }
 };
 </script>
+
+<style>
+.button {
+    padding:10px;
+}
+#bookmarked {
+    background-color: #808080;
+}
+</style>
